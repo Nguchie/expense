@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
+<html>
+{% block title %}
+<head>
+    <title>Login</title>
+
+<style>
+       body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #141f33;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h2 {
+    color: #141f33; /* Dark blue color */
+    text-align: center;
+    margin-bottom: 20px;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+label {
+    margin-bottom: 5px;
+    color: #141f33; /* Dark blue color */
+    font-size: 14px;
+}
+input[type="text"], input[type="password"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+button {
+    background-color: #141f33; /* Dark blue background */
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: left;
+}
+button:hover {
+    background-color: #4db8b8; /* Darker teal on hover */
+}
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* Style the form elements */
+div {
+    width: 100%;
+    margin-bottom: 15px;
+}
+input[type="text"], input[type="password"] {
+    width: 100%;
+}
+
+    </style>
+</head>
+{% endblock %}
+{% block content %}
+<body>
+    <h2>Login</h2>
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+  <p>
+            <a href="{% url 'password_reset_form' %}">Forgot Password?</a>
+        </p>
+</body>
+</html>
+{% endblock %}

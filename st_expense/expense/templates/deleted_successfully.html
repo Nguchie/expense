@@ -1,0 +1,64 @@
+<!-- expense/templates/delete_expenditure.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Deletion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Light grey background */
+            color: #141f33; /* Dark blue text color */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff; /* White background for the form */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h2 {
+            color: #141f33; /* Dark blue text color */
+        }
+        form {
+            margin: 20px 0;
+        }
+        button {
+            background-color: #5ce6e6;
+            color: #141f33;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #4db8b8; /* Darker teal on hover */
+        }
+        a {
+            text-decoration: none;
+            color: #5ce6e6; /* Light teal color for the link */
+            font-size: 16px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Are you sure you want to delete "{{ expenditure.ename }}"?</h2>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Confirm</button>
+        </form>
+        <a href="{% url 'expenditure_list' %}">Cancel</a>
+    </div>
+</body>
+</html>

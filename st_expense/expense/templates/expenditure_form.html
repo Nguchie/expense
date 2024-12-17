@@ -1,0 +1,108 @@
+<!-- expense/templates/expenditure_form.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}
+    <title>{{ form.instance.pk|yesno:"Edit,Create" }} Expenditure</title>
+
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Light grey background */
+    color: #141f33; /* Dark blue text color */
+    margin: 0;
+    padding: 0;
+}
+.container {
+    width: 90%;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff; /* White background for the form */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+h2 {
+    color: #141f33; /* Dark blue text color */
+    margin-bottom: 20px;
+}
+form {
+    margin: 20px 0;
+    text-align: left;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.form-group input, .form-group select {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+button {
+    background-color: 141f33 /* Light teal background for button */
+    color: #ffffff; /* White text color for button */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+button:hover {
+    background-color: #4db8b8; /* Darker teal on hover */
+}
+a {
+    text-decoration: none;
+    color: #141f33; /* Dark blue color for the link */
+    font-size: 16px;
+    display: inline-block;
+    margin-top: 20px;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+    </style>
+</head>
+ {%endblock %}
+
+{%block content %}
+<body>
+    <div class="container">
+        <h2>{{ form.instance.pk|yesno:"Edit,Create" }} Expenditure</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.ename.label_tag }}<br>
+                {{ form.ename }}
+            </div>
+            <div class="form-group">
+                {{ form.eamount.label_tag }}<br>
+                {{ form.eamount }}
+            </div>
+            <div class="form-group">
+                {{ form.edate.label_tag }}<br>
+                {{ form.edate }}
+            </div>
+            <div class="form-group">
+                {{ form.issued_to.label_tag }}<br>
+                {{ form.issued_to }}
+            </div>
+            <button type="submit">Save</button>
+        </form>
+        <a href="{% url 'expenditure_list' %}">Back to List</a>
+    </div>
+</body>
+</html>
+{% endblock %}

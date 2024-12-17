@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}
+    <title>Expenditures List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #141f33;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #141f33; /* Dark blue text color */
+            margin-bottom: 20px;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .alert-success {
+            background-color: #d4edda; /* Light green background */
+            color: #155724; /* Dark green text color */
+            border: 1px solid #c3e6cb; /* Light green border */
+        }
+        a {
+            text-decoration: none;
+            color: #141f33; /* Dark blue color */
+            font-size: 16px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            table-layout: fixed; /* Fixed table layout to prevent overflow */
+        }
+        thead {
+            background-color: #141f33; /* Dark blue background for table header */
+            color: #ffffff; /* White text color for table header */
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            word-wrap: break-word; /* Ensures long content wraps within cells */
+        }
+        tr:nth-child(even) {
+            background-color: #f4f4f4; /* Light grey background for even rows */
+        }
+
+        .icons a {
+            color: #141f33; /* Dark blue color for icons */
+            margin-left: 10px;
+            font-size: 18px;
+        }
+        .icons a:hover {
+            color: #4db8b8; /* Darker teal on hover */
+        }
+        .search-form {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px; /* Add space between buttons */
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+        }
+        .search-form input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            flex: 1; /* Input takes up available space */
+            min-width: 0; /* Allow shrinking on smaller screens */
+        }
+        .search-form button {
+            background-color: #141f33;
+            color: #ffffff;
+            border: none;
+            padding:0 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            /* flex-shrink: 0;  Prevents buttons from shrinking */
+        }
+        .search-form button:hover {
+            background-color: #4db8b8;
+        }
+        .logout_button {
+            background-color: #141f33; /* Dark blue */
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            position: absolute; /* Positioned at the top right */
+            top: 20px;
+            right: 50px;
+        }
+        .logout_button:hover {
+            background-color: #4db8b8; /* Darker teal on hover */
+        }
+        .export {
+            text-decoration: none;
+            color: #141f33; /* Dark blue color */
+            font-size: 16px;
+            top: 160px;
+            position: absolute;
+            right: 150px;
+        }
+
+        @media (max-width: 600px) {
+
+            .search-form input[type="text"] {
+                width: 80%; /* Full width on mobile */
+                margin-bottom: 10px; /* Space below input */
+            }
+
+            .search-form button {
+                display:inline;
+                padding:0 26px;
+            }
+
+            table {
+                font-size: 14px; /* Reduce font size to prevent overflow */
+            }
+
+            th, td {
+                padding: 8px; /* Reduce padding to fit content better */
+            }
+        }
+
+    </style>
+</head>
+{% endblock %}
+
+{% block content %}
+<body>
+
+<div class="logout_button">
+   <button type="button" onclick="window.location.href='{% url 'login' %}'">Logout</button>
+</div>
+
+    <div class="container">
+        {% if messages %}
+            <div class="alert alert-success">
+                {% for message in messages %}
+                    <div>{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <h2>Expenses</h2>
+        <a href="{% url 'create_expenditure' %}">Add New Expense</a>
+
+        <div class="export">
+            <a href="{% url 'export_expenditures' %}" class="btn btn-primary">Export As PDF</a>
+        </div>
+
+        <!-- search form -->
+        <form method="get" action="{% url 'expenditure_list' %}" class="search-form">
+            <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Type here to search">
+            <button type="submit">Search</button>
+            <button type="button" onclick="window.location.href='{% url 'expenditure_list' %}'">Clear</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Issued To</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expenditure in expenditures %}
+                <tr>
+                    <td>{{ expenditure.ename }}</td>
+                    <td>{{ expenditure.eamount }}</td>
+                    <td>{{ expenditure.edate }}</td>
+                    <td>{{ expenditure.issued_to }}</td>
+                    <td class="icons">
+                        <a href="{% url 'update_expenditure' expenditure.pk %}">
+                            <i class="fas fa-edit" title="Edit"></i>
+                        </a>
+                        <a href="{% url 'delete_expenditure' expenditure.pk %}">
+                            <i class="fas fa-trash-alt" title="Delete"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+{% endblock %}
